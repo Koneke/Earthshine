@@ -19,14 +19,29 @@
 
 	public enum Stat
 	{
-		FIRST,
 		Strength,
 		Constitution,
 		Dexterity,
 		Intelligence,
 		Wisdom,
 		Charisma,
-		MAX
+	}
+
+	public static class Stats
+	{
+		private static List<Stat> GetAllStats()
+		{
+			return Enum.GetValues(typeof (Stat)).Cast<Stat>().ToList();
+		}
+
+		// blah blah blah not entirely perfect optimization wise, watch me not
+		// give a fuck (yet).
+		public static List<Stat> AllStats => GetAllStats();
+
+		public static Stat GetRandomStat()
+		{
+			return AllStats[Program.Random.Next(AllStats.Count)];
+		}
 	}
 
 	public class Chromosome
@@ -64,7 +79,7 @@
 		{
 			this.Chromosomes = new Dictionary<Stat, List<Chromosome>>();
 
-			for (var stat = Stat.FIRST + 1; stat < Stat.MAX; stat++)
+			foreach (var stat in Stats.AllStats)
 			{
 				this.Chromosomes.Add(stat, new List<Chromosome>());
 			}
@@ -75,7 +90,7 @@
 			var stats = new Dictionary<Stat, List<string>>();
 			var joined = new List<string>();
 
-			for (var stat = Stat.FIRST + 1; stat < Stat.MAX; stat++)
+			foreach (var stat in Stats.AllStats)
 			{
 				stats.Add(stat, new List<string>());
 
@@ -99,9 +114,7 @@
 
 			for (var i = 0; i < 18; i++)
 			{
-				var stat = (Stat)Program.Random.Next(
-					(int)(Stat.FIRST + 1),
-					(int)Stat.MAX);
+				var stat = Stats.GetRandomStat();
 				var chromosome = new Chromosome(stat, Program.Random.Next(10, 20));
 				result.Chromosomes[stat].Add(chromosome);
 			}
@@ -124,7 +137,7 @@
 			var excessBucket = new List<Chromosome>();
 
 			// create our buckets
-			for (var stat = Stat.FIRST + 1; stat < Stat.MAX; stat++)
+			foreach (var stat in Stats.AllStats)
 			{
 				firstBucket.Add(stat, new List<Chromosome>());
 				secondBucket.Add(stat, new List<Chromosome>());
@@ -133,7 +146,7 @@
 				second.Chromosomes[stat].ForEach(c => secondBucket[stat].Add(c));
 			}
 
-			for (var stat = Stat.FIRST + 1; stat < Stat.MAX; stat++)
+			foreach (var stat in Stats.AllStats)
 			{
 				List<Chromosome> largerPool, smallerPool;
 
@@ -171,7 +184,7 @@
 			}
 
 			// join the two, now even strands, at random.
-			for (var stat = Stat.FIRST + 1; stat < Stat.MAX; stat++)
+			foreach (var stat in Stats.AllStats)
 			{
 				for (var i = 0; i < firstBucket[stat].Count; i++)
 				{
