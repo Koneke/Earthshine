@@ -140,25 +140,18 @@ namespace Earthshine
 
 		public override string ToString()
 		{
-			var stats = new Dictionary<Stat, List<string>>();
-			var joined = new List<string>();
+			return this.Chromosomes.DictListJoin(
+				"      ", " ",
+				chromosome => chromosome.Value,
+				chromosome => chromosome.ToString());
+		}
 
-			foreach (var stat in Stats.AllStats)
-			{
-				stats.Add(stat, new List<string>());
-
-				var chromosomes = new List<Chromosome>(this.Chromosomes[stat]);
-				chromosomes.Sort(Comparer);
-
-				foreach (var chromosome in chromosomes)
-				{
-					stats[stat].Add(chromosome.ToString());
-				}
-
-				joined.Add(string.Join(" ", stats[stat]));
-			}
-
-			return string.Join("      ", joined);
+		public string CSVDump()
+		{
+			return this.Chromosomes.DictListJoin(
+				",", ";",
+				chromosome => chromosome.Value,
+				chromosome => chromosome.Value);
 		}
 	}
 }

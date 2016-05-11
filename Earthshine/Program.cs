@@ -13,6 +13,9 @@
 			var first = DNA.GenerateRandom(18);
 			var second = DNA.GenerateRandom(18);
 			var joined = DNA.Join(first, second);
+
+			var c = first.CSVDump();
+
 			var a = 0;
 		}
 	}
