@@ -128,6 +128,7 @@ namespace Earthshine
 			{
 				var chrom = excessBucket[Program.Random.Next(excessBucket.Count)];
 				result.Chromosomes[chrom.Stat].Add(chrom);
+				excessBucket.Remove(chrom);
 			}
 
 			return result;
